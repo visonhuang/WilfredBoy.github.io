@@ -239,7 +239,7 @@
 
     
         <meta property="article:published_time" content="Thu Jul 12 2018 16:35:03 GMT+0800">
-        <meta property="article:modified_time" content="Sun Jul 15 2018 18:56:43 GMT+0800">
+        <meta property="article:modified_time" content="Mon Jul 16 2018 18:34:05 GMT+0800">
     
 
     <!-- The Twitter Card protocol -->
@@ -262,7 +262,7 @@
     "mainEntityOfPage": "http://yoursite.com/2018/07/12/AsyncTask源码解析/index.html",
     "headline": "AsyncTask源码解析",
     "datePublished": "Thu Jul 12 2018 16:35:03 GMT+0800",
-    "dateModified": "Sun Jul 15 2018 18:56:43 GMT+0800",
+    "dateModified": "Mon Jul 16 2018 18:34:05 GMT+0800",
     "author": {
         "@type": "Person",
         "name": "Wilfred",
@@ -346,7 +346,7 @@
     </button>
 
     <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
-        <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-Android-3-0版本之前的AsyncTask"><span class="post-toc-number">1.</span> <span class="post-toc-text">1.Android 3.0版本之前的AsyncTask</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-Android-7-0版本的AsyncTask"><span class="post-toc-number">2.</span> <span class="post-toc-text">2.Android 7.0版本的AsyncTask</span></a></li></ol>
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-Android-3-0版本之前的AsyncTask"><span class="post-toc-number">2.</span> <span class="post-toc-text">1.Android 3.0版本之前的AsyncTask</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-Android-7-0版本的AsyncTask"><span class="post-toc-number">3.</span> <span class="post-toc-text">2.Android 7.0版本的AsyncTask</span></a></li></ol>
     </ul>
     
 
@@ -485,6 +485,8 @@
                 <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
     
         <a id="more"></a>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>花了2天时间搭建了博客，今天终于可以发表第一篇文章了，有点小激动。</p>
+<p>最近挺痴迷于源码的，之前看的源码都没有记录下来。这几天对AsyncTask源码产生了兴趣，于是开始又一番的源码之旅。</p>
 <h3 id="1-Android-3-0版本之前的AsyncTask"><a href="#1-Android-3-0版本之前的AsyncTask" class="headerlink" title="1.Android 3.0版本之前的AsyncTask"></a><strong>1.Android 3.0版本之前的AsyncTask</strong></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public abstract class AsyncTask&lt;Params, Progress, Result&gt; &#123;</span><br><span class="line">  private static final String LOG_TAG = &quot;AsyncTask&quot;;</span><br><span class="line">  private static final int CORE_POOL_SIZE = 5;</span><br><span class="line">  private static final int MAXIMUM_POOL_SIZE = 128;</span><br><span class="line">  private static final int KEEP_ALIVE = 1;</span><br><span class="line">  private static final BlockingQueue&lt;Runnable&gt; sWorkQueue =</span><br><span class="line">           new LinkedBlockingQueue&lt;Runnable&gt;(10);</span><br><span class="line">  private static final ThreadFactory sThreadFactory = new ThreadFactory() &#123;</span><br><span class="line">      private final AtomicInteger mCount = new AtomicInteger(1);</span><br><span class="line">      public Thread newThread(Runnable r) &#123;</span><br><span class="line">            return new Thread(r, &quot;AsyncTask #&quot; + mCount.getAndIncrement());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">  private static final ThreadPoolExecutor sExecutor = new ThreadPoolExecutor(CORE_POOL_SIZE,</span><br><span class="line">            MAXIMUM_POOL_SIZE, KEEP_ALIVE, TimeUnit.SECONDS, sWorkQueue, sThreadFactory);</span><br><span class="line"></span><br><span class="line">  ...         </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在这里又看到了ThreadPoolExecutor，它的核心线程数是5个，线程池允许创建的最大线程数为128，非核心线程空闲等待新任务的最长时间为10秒。采用的阻塞队列是LinkedBlockingQueue，它的容量为10。3.0版本之前的AsyncTask有一个缺点就是，线程池最大的线程数为128，加上阻塞队列的10个任务，所以AsyncTask最多能同时容纳138个任务，当提交第139任务时就会执行饱和策略，默认抛出RejectedExecutionException异常。</p>
 <h3 id="2-Android-7-0版本的AsyncTask"><a href="#2-Android-7-0版本的AsyncTask" class="headerlink" title="2.Android 7.0版本的AsyncTask"></a><strong>2.Android 7.0版本的AsyncTask</strong></h3><p>在这里采用Android 7.0版本的AsyncTask作为例子，首先来看AsyncTask的构造函数： </p>
