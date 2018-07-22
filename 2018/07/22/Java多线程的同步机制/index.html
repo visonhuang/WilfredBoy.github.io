@@ -43,7 +43,7 @@
     
     <title>
         
-            AsyncTask源码解析 | 
+            Java多线程的同步机制 | 
         
         Wilfred&#39;blog
     </title>
@@ -53,8 +53,8 @@
     <link rel="icon" href="/img/favicon.png">
 
     <meta name="format-detection" content="telephone=no"/>
-    <meta name="description" itemprop="description" content="熟练地使用AsyncTask后，一直有想研究其源码的冲动，现在终于可以一探究竟。">
-    <meta name="keywords" content=",源码解析">
+    <meta name="description" itemprop="description" content="">
+    <meta name="keywords" content=",Java基础">
     <meta name="theme-color" content="#0097A7">
 
     <!-- Disable Fucking Bloody Baidu Tranformation -->
@@ -215,7 +215,7 @@
     <!-- WebAPP Icons -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="application-name" content="Wilfred&#39;blog">
-    <meta name="msapplication-starturl" content="http://yoursite.com/2018/07/12/AsyncTask源码解析/">
+    <meta name="msapplication-starturl" content="http://yoursite.com/2018/07/22/Java多线程的同步机制/">
     <meta name="msapplication-navbutton-color" content="#0097A7">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Wilfred&#39;blog">
@@ -230,16 +230,16 @@
     
 
     <!-- The Open Graph protocol -->
-    <meta property="og:url" content="http://yoursite.com/2018/07/12/AsyncTask源码解析/">
+    <meta property="og:url" content="http://yoursite.com/2018/07/22/Java多线程的同步机制/">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="AsyncTask源码解析 | Wilfred&#39;blog">
+    <meta property="og:title" content="Java多线程的同步机制 | Wilfred&#39;blog">
     <meta property="og:image" content="/img/favicon.png">
-    <meta property="og:description" content="熟练地使用AsyncTask后，一直有想研究其源码的冲动，现在终于可以一探究竟。">
-    <meta property="og:article:tag" content="源码解析"> 
+    <meta property="og:description" content="">
+    <meta property="og:article:tag" content="Java基础"> 
 
     
-        <meta property="article:published_time" content="Thu Jul 12 2018 16:35:03 GMT+0800">
-        <meta property="article:modified_time" content="Mon Jul 16 2018 18:40:01 GMT+0800">
+        <meta property="article:published_time" content="Sun Jul 22 2018 15:07:03 GMT+0800">
+        <meta property="article:modified_time" content="Sun Jul 22 2018 20:41:53 GMT+0800">
     
 
     <!-- The Twitter Card protocol -->
@@ -247,7 +247,7 @@
 
     <!-- Add canonical link for SEO -->
     
-        <link rel="canonical" href="http://yoursite.com/2018/07/12/AsyncTask源码解析/index.html" />
+        <link rel="canonical" href="http://yoursite.com/2018/07/22/Java多线程的同步机制/index.html" />
     
 
     <!-- Structured-data for SEO -->
@@ -259,10 +259,10 @@
 {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "mainEntityOfPage": "http://yoursite.com/2018/07/12/AsyncTask源码解析/index.html",
-    "headline": "AsyncTask源码解析",
-    "datePublished": "Thu Jul 12 2018 16:35:03 GMT+0800",
-    "dateModified": "Mon Jul 16 2018 18:40:01 GMT+0800",
+    "mainEntityOfPage": "http://yoursite.com/2018/07/22/Java多线程的同步机制/index.html",
+    "headline": "Java多线程的同步机制",
+    "datePublished": "Sun Jul 22 2018 15:07:03 GMT+0800",
+    "dateModified": "Sun Jul 22 2018 20:41:53 GMT+0800",
     "author": {
         "@type": "Person",
         "name": "Wilfred",
@@ -280,8 +280,8 @@
             "url": "/img/favicon.png"
         }
     },
-    "keywords": ",源码解析",
-    "description": "熟练地使用AsyncTask后，一直有想研究其源码的冲动，现在终于可以一探究竟。",
+    "keywords": ",Java基础",
+    "description": "",
 }
 </script>
 
@@ -346,7 +346,7 @@
     </button>
 
     <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
-        <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-Android-3-0版本之前的AsyncTask"><span class="post-toc-number">2.</span> <span class="post-toc-text">1.Android 3.0版本之前的AsyncTask</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-Android-7-0版本的AsyncTask"><span class="post-toc-number">3.</span> <span class="post-toc-text">2.Android 7.0版本的AsyncTask</span></a></li></ol>
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Java多线程的同步机制"><span class="post-toc-number">2.</span> <span class="post-toc-text">Java多线程的同步机制</span></a></li></ol>
     </ul>
     
 
@@ -378,7 +378,7 @@
         
     
             <p class="article-headline-p">
-                AsyncTask源码解析
+                Java多线程的同步机制
             </p>
         </div>
 
@@ -397,7 +397,7 @@
     <!-- Author Name & Date -->
     <div>
         <strong>Wilfred</strong>
-        <span>7月 12, 2018</span>
+        <span>7月 22, 2018</span>
     </div>
 
     <div class="section-spacer"></div>
@@ -421,7 +421,7 @@
     </button>
     <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
         <li class="mdl-menu__item">
-        <a class="post_tag-link" href="/tags/源码解析/">源码解析</a>
+        <a class="post_tag-link" href="/tags/Java基础/">Java基础</a>
     </ul>
     
 
@@ -441,7 +441,7 @@
 
     <!-- Share Twitter -->
     
-        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=AsyncTask源码解析&url=http://yoursite.com/2018/07/12/AsyncTask源码解析/index.html&via=Wilfred" target="_blank">
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Java多线程的同步机制&url=http://yoursite.com/2018/07/22/Java多线程的同步机制/index.html&via=Wilfred" target="_blank">
             <li class="mdl-menu__item">
                 分享到 Twitter
             </li>
@@ -450,7 +450,7 @@
 
     <!-- Share Facebook -->
     
-        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2018/07/12/AsyncTask源码解析/index.html" target="_blank">
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2018/07/22/Java多线程的同步机制/index.html" target="_blank">
             <li class="mdl-menu__item">
                 分享到 Facebook
             </li>
@@ -465,7 +465,7 @@
 
     <!-- Share QQ -->
     
-        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=Wilfred&#39;blog&title=AsyncTask源码解析&summary=&pics=http://yoursite.com/img/favicon.png&url=http://yoursite.com/2018/07/12/AsyncTask源码解析/index.html" target="_blank">
+        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=Wilfred&#39;blog&title=Java多线程的同步机制&summary=&pics=http://yoursite.com/img/favicon.png&url=http://yoursite.com/2018/07/22/Java多线程的同步机制/index.html" target="_blank">
             <li class="mdl-menu__item">
                 分享到 QQ
             </li>
@@ -485,34 +485,49 @@
                 <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
     
         <a id="more"></a>
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>花了2天时间搭建了博客，今天终于可以发表第一篇文章了，有点小激动。</p>
-<p>最近挺痴迷于源码，之前看的源码都没有记录下来。这几天对AsyncTask源码产生了兴趣，于是又开始了一番的源码之旅。</p>
-<h3 id="1-Android-3-0版本之前的AsyncTask"><a href="#1-Android-3-0版本之前的AsyncTask" class="headerlink" title="1.Android 3.0版本之前的AsyncTask"></a><strong>1.Android 3.0版本之前的AsyncTask</strong></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public abstract class AsyncTask&lt;Params, Progress, Result&gt; &#123;</span><br><span class="line">  private static final String LOG_TAG = &quot;AsyncTask&quot;;</span><br><span class="line">  private static final int CORE_POOL_SIZE = 5;</span><br><span class="line">  private static final int MAXIMUM_POOL_SIZE = 128;</span><br><span class="line">  private static final int KEEP_ALIVE = 1;</span><br><span class="line">  private static final BlockingQueue&lt;Runnable&gt; sWorkQueue =</span><br><span class="line">           new LinkedBlockingQueue&lt;Runnable&gt;(10);</span><br><span class="line">  private static final ThreadFactory sThreadFactory = new ThreadFactory() &#123;</span><br><span class="line">      private final AtomicInteger mCount = new AtomicInteger(1);</span><br><span class="line">      public Thread newThread(Runnable r) &#123;</span><br><span class="line">            return new Thread(r, &quot;AsyncTask #&quot; + mCount.getAndIncrement());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">  private static final ThreadPoolExecutor sExecutor = new ThreadPoolExecutor(CORE_POOL_SIZE,</span><br><span class="line">            MAXIMUM_POOL_SIZE, KEEP_ALIVE, TimeUnit.SECONDS, sWorkQueue, sThreadFactory);</span><br><span class="line"></span><br><span class="line">  ...         </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在这里又看到了ThreadPoolExecutor，它的核心线程数是5个，线程池允许创建的最大线程数为128，非核心线程空闲等待新任务的最长时间为10秒。采用的阻塞队列是LinkedBlockingQueue，它的容量为10。3.0版本之前的AsyncTask有一个缺点就是，线程池最大的线程数为128，加上阻塞队列的10个任务，所以AsyncTask最多能同时容纳138个任务，当提交第139任务时就会执行饱和策略，默认抛出RejectedExecutionException异常。</p>
-<h3 id="2-Android-7-0版本的AsyncTask"><a href="#2-Android-7-0版本的AsyncTask" class="headerlink" title="2.Android 7.0版本的AsyncTask"></a><strong>2.Android 7.0版本的AsyncTask</strong></h3><p>在这里采用Android 7.0版本的AsyncTask作为例子，首先来看AsyncTask的构造函数： </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">public AsyncTask() &#123;</span><br><span class="line">    mWorker = new WorkerRunnable&lt;Params, Result&gt;() &#123;//1</span><br><span class="line">        public Result call() throws Exception &#123;</span><br><span class="line">            mTaskInvoked.set(true);</span><br><span class="line">            Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);</span><br><span class="line">            Result result = doInBackground(mParams);</span><br><span class="line">            Binder.flushPendingCommands();</span><br><span class="line">            return postResult(result);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    mFuture = new FutureTask&lt;Result&gt;(mWorker) &#123;//2</span><br><span class="line">        @Override</span><br><span class="line">        protected void done() &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                postResultIfNotInvoked(get());</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                android.util.Log.w(LOG_TAG, e);</span><br><span class="line">            &#125; catch (ExecutionException e) &#123;</span><br><span class="line">                throw new RuntimeException(&quot;An error occurred while executing doInBackground()&quot;,</span><br><span class="line">                        e.getCause());</span><br><span class="line">            &#125; catch (CancellationException e) &#123;</span><br><span class="line">                postResultIfNotInvoked(null);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>从注释1处看这个WorkerRunnable实现了Callable<result>接口，并实现了它的call方法，在call方法中调用了doInBackground(mParams)来处理任务并得到结果，并最终调用postResult将结果投递出去。注释2处的FutureTask是一个可管理的异步任务，它实现了Runnable和Futrue这两个接口。因此它可以包装Runnable和Callable<v>,并提供给Executor执行。也可以调用线程直接执行（FutureTask.run()）。在这里WorkerRunnable作为参数传递给了FutureTask。这两个变量会暂时保存在内存中，稍后会用到它们。<br> 当要执行AsyncTask时，需要调用它的execute方法，代码如下所示。</v></result></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public final AsyncTask&lt;Params, Progress, Result&gt; execute(Params... params) &#123;</span><br><span class="line">        return executeOnExecutor(sDefaultExecutor, params);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p> execute方法又调用了executeOnExecutor方法： </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public final AsyncTask&lt;Params, Progress, Result&gt; executeOnExecutor(Executor exec,</span><br><span class="line">            Params... params) &#123;</span><br><span class="line">        if (mStatus != Status.PENDING) &#123;</span><br><span class="line">            switch (mStatus) &#123;</span><br><span class="line">                case RUNNING:</span><br><span class="line">                    throw new IllegalStateException(&quot;Cannot execute task:&quot;</span><br><span class="line">                            + &quot; the task is already running.&quot;);</span><br><span class="line">                case FINISHED:</span><br><span class="line">                    throw new IllegalStateException(&quot;Cannot execute task:&quot;</span><br><span class="line">                            + &quot; the task has already been executed &quot;</span><br><span class="line">                            + &quot;(a task can be executed only once)&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        mStatus = Status.RUNNING;</span><br><span class="line">        onPreExecute();</span><br><span class="line">        mWorker.mParams = params;//1</span><br><span class="line">        exec.execute(mFuture);</span><br><span class="line">        return this;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里会首先调用 onPreExecute方法，在注释1处将AsyncTask的参数传给WorkerRunnable，从前面我们知道WorkerRunnable会作为参数传递给了FutureTask，因此，参数被封装到FutureTask中。接下来会调用exec的execute方法，并将mFuture也就是前面讲到的FutureTask传进去。这里exec是传进来的参数sDefaultExecutor，它是一个串行的线程池，它的代码如下所示。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">private static class SerialExecutor implements Executor &#123;</span><br><span class="line">        final ArrayDeque&lt;Runnable&gt; mTasks = new ArrayDeque&lt;Runnable&gt;();</span><br><span class="line">        Runnable mActive;</span><br><span class="line">        public synchronized void execute(final Runnable r) &#123;</span><br><span class="line">            mTasks.offer(new Runnable() &#123;//1</span><br><span class="line">                public void run() &#123;</span><br><span class="line">                    try &#123;</span><br><span class="line">                        r.run();//2</span><br><span class="line">                    &#125; finally &#123;</span><br><span class="line">                        scheduleNext();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">            if (mActive == null) &#123;</span><br><span class="line">                scheduleNext();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        protected synchronized void scheduleNext() &#123;</span><br><span class="line">            if ((mActive = mTasks.poll()) != null) &#123;</span><br><span class="line">                THREAD_POOL_EXECUTOR.execute(mActive);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>从注释1处可以看出，当调用SerialExecutor 的execute方法时，会将FutureTask加入到mTasks中。当任务执行完或者当前没有活动的任务时都会执行scheduleNext方法，它会从mTasks取出FutureTask任务并交由THREAD_POOL_EXECUTOR处理。关于THREAD_POOL_EXECUTOR，后面会介绍。从这里看出SerialExecutor是串行执行的。在注释2处可以看到执行了FutureTask的run方法，它最终会调用WorkerRunnable的call方法。<br>前面我们提到call方法postResult方法将结果投递出去，postResult方法代码如下所示。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">private Result postResult(Result result) &#123;</span><br><span class="line">    @SuppressWarnings(&quot;unchecked&quot;)</span><br><span class="line">    Message message = getHandler().obtainMessage(MESSAGE_POST_RESULT,</span><br><span class="line">        new AsyncTaskResult&lt;Result&gt;(this, result));</span><br><span class="line">    message.sendToTarget();</span><br><span class="line">    return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在postResult方法中会创建Message，并将结果赋值给这个Message，通过getHandler方法得到Handler，并通过这个Handler发送消息，getHandler方法如下所示。 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">private static Handler getHandler() &#123;</span><br><span class="line">    synchronized (AsyncTask.class) &#123;</span><br><span class="line">        if (sHandler == null) &#123;</span><br><span class="line">            sHandler = new InternalHandler();</span><br><span class="line">        &#125;</span><br><span class="line">        return sHandler;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在getHandler方法中创建了InternalHandler，InternalHandler的定义如下所示。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">private static class InternalHandler extends Handler &#123;</span><br><span class="line">        public InternalHandler() &#123;</span><br><span class="line">            super(Looper.getMainLooper());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @SuppressWarnings(&#123;&quot;unchecked&quot;, &quot;RawUseOfParameterizedType&quot;&#125;)</span><br><span class="line">        @Override</span><br><span class="line">        public void handleMessage(Message msg) &#123;</span><br><span class="line">            AsyncTaskResult&lt;?&gt; result = (AsyncTaskResult&lt;?&gt;) msg.obj;</span><br><span class="line">            switch (msg.what) &#123;</span><br><span class="line">                case MESSAGE_POST_RESULT:</span><br><span class="line">                    // There is only one result</span><br><span class="line">                    result.mTask.finish(result.mData[0]);</span><br><span class="line">                    break;</span><br><span class="line">                case MESSAGE_POST_PROGRESS:</span><br><span class="line">                    result.mTask.onProgressUpdate(result.mData);</span><br><span class="line">                    break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在接收到MESSAGE_POST_RESULT消息后会调用AsyncTask的finish方法： </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">private void finish(Result result) &#123;</span><br><span class="line">    if (isCancelled()) &#123;</span><br><span class="line">        onCancelled(result);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        onPostExecute(result);</span><br><span class="line">    &#125;</span><br><span class="line">    mStatus = Status.FINISHED;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果AsyncTask任务被取消了则执行onCancelled方法，否则就调用onPostExecute方法。而正是通过onPostExecute方法我们才能够得到异步任务执行后的结果。<br> 接着回头来看SerialExecutor ，线程池SerialExecutor主要用来处理排队，将任务串行处理。 SerialExecutor中调用scheduleNext方法时，将任务交给THREAD_POOL_EXECUTOR。THREAD_POOL_EXECUTOR同样是一个线程池，用来执行任务。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();</span><br><span class="line">    private static final int CORE_POOL_SIZE = Math.max(2, Math.min(CPU_COUNT - 1, 4));</span><br><span class="line">    private static final int MAXIMUM_POOL_SIZE = CPU_COUNT * 2 + 1;</span><br><span class="line">    private static final int KEEP_ALIVE_SECONDS = 30;</span><br><span class="line">    private static final BlockingQueue&lt;Runnable&gt; sPoolWorkQueue =</span><br><span class="line">            new LinkedBlockingQueue&lt;Runnable&gt;(128);</span><br><span class="line">    public static final Executor THREAD_POOL_EXECUTOR;</span><br><span class="line">    static &#123;</span><br><span class="line">        ThreadPoolExecutor threadPoolExecutor = new threadPoolExecutor (</span><br><span class="line">                CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE_SECONDS, TimeUnit.SECONDS,</span><br><span class="line">                sPoolWorkQueue, sThreadFactory);</span><br><span class="line">        threadPoolExecutor.allowCoreThreadTimeOut(true);</span><br><span class="line">        THREAD_POOL_EXECUTOR = threadPoolExecutor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>THREAD_POOL_EXECUTOR指的就是threadPoolExecutor，他的核心线程和线程池允许创建的最大线程数都是由CPU的核数来计算出来的。它采用的阻塞队列仍旧是LinkedBlockingQueue，容量为128。<br> 到此， Android 7.0版本的AsyncTask的源码就分析完了，在AsyncTask中用到了线程池，线程池中运行线程并且又用到了阻塞队列，因此，本章前面介绍的知识在这一节中做了很好的铺垫。Android 3.0及以上版本用SerialExecutor作为默认的线程，它将任务串行的处理保证一个时间段只有一个任务执行，而3.0之前版本是并行处理的。关于3.0之前版本的缺点在3.0之后版本也不会出现，因为线程是一个接一个执行的，不会出现超过任务数而执行饱和策略。如果想要在3.0及以上版本使用并行的线程处理可以使用如下的代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR，&quot;&quot;);</span><br></pre></td></tr></table></figure>
-<p>其中asyncTask是我们自定义的AsyncTask，当然也可以传入Java提供的线程池，比如传入CachedThreadPool。 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">asyncTask.executeOnExecutor(Executors.newCachedThreadPool(),&quot;&quot;);</span><br></pre></td></tr></table></figure>
-<p> 也可以传入自定义的线程池： </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Executor exec =new ThreadPoolExecutor(0,  Integer.MAX_VALUE,</span><br><span class="line">                0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue&lt;Runnable&gt;());</span><br><span class="line">   asyncTask.executeOnExecutor(exec,&quot;&quot;);</span><br></pre></td></tr></table></figure>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>Java的同步机制在很久之前就大概地学过了一遍，之后就没有再详细地去学习这方面的内容了。这阵子在阅读EventBus源码的时候，又遇到了同步锁，似懂非懂的感觉让我决定再学习一波同步机制。</p>
+<h3 id="Java多线程的同步机制"><a href="#Java多线程的同步机制" class="headerlink" title="Java多线程的同步机制"></a>Java多线程的同步机制</h3><p>一段synchronized的代码被一个线程执行之前，他要先拿到执行这段代码的权限，在 java里边就是拿到某个同步对象的锁（一个对象只有一把锁）； 如果这个时候同步对象的锁被其他线程拿走了，他（这个线程）就只能等了（线程阻塞在锁池 等待队列中）。 取到锁后，他就开始执行同步代码(被synchronized修饰的代码）；线程执行完同步代码后马上就把锁还给同步对象，其他在锁池中 等待的某个线程就可以拿到锁执行同步代码了。这样就保证了同步代码在统一时刻只有一个线程在执行。 </p>
+<p>众所周知，在Java多线程编程中，一个非常重要的方面就是线程的同步问题。 关于线程的同步，一般有以下解决方法：  </p>
+<ol>
+<li>在需要同步的方法的方法签名中加入synchronized关键字。  </li>
+<li>使用synchronized块对需要进行同步的代码段进行同步。  </li>
+<li>使用JDK 5中提供的java.util.concurrent.lock包中的Lock对象。 </li>
+</ol>
+<p>让我们从JVM的角度来看看锁这个概念：  </p>
+<p>在Java程序运行时环境中，JVM需要对两类线程共享的数据进行协调： </p>
+<ol>
+<li>保存在堆中的实例变量 </li>
+<li>保存在方法区中的类变量  这两类数据是被所有线程共享的。 （程序不需要协调保存在Java 栈当中的数据。因为这些数据是属于拥有该栈的线程所私有的。） </li>
+</ol>
+<p>在JVM的规范中，有这么一些话：     </p>
+<blockquote>
+<p>​    “在JVM中，每个对象和类在逻辑上都是和一个监视器相关联的” </p>
+<pre><code>“为了实现监视器的排他性监视能力，JVM为每一个对象和类都关联一个锁”      
+</code></pre><p>​    “锁住了一个对象，就是获得对象相关联的监视器”          </p>
+</blockquote>
+<p>类锁实际上用对象锁来实现。当虚拟机装载一个class文件的时候，它就会创建一个java.lang.Class类的实例。当锁住一个对象的时候，实际上锁住的是那个类的Class对象。 </p>
+<p>一个线程可以多次对同一个对象上锁。对于每一个对象，java虚拟机维护一个加锁计数器，线程每获得一次该对象，计数器就加1，每释放一次，计数器就减 1，当计数器值为0时，锁就被完全释放了。 </p>
+<p>java编程人员不需要自己动手加锁，对象锁是java虚拟机内部使用的。 在java程序中，只需要使用synchronized块或者synchronized方法就可以标志一个监视区域。当每次进入一个监视区域时，java 虚拟机都会自动锁上对象或者类。 </p>
+<p>很多人都知道，在Java多线程编程中，有一个重要的关键字，synchronized。但是很多人看到这个东西会感到困惑：“都说同步机制是通过对象锁来实现的，但是这么一个关键字，我也看不出来Java程序锁住了哪个对象阿？“ </p>
+<p>没错，我一开始也是对这个问题感到困惑和不解。不过还好，我们有下面的这个例程： </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class ThreadTest extends Thread &#123;     </span><br><span class="line">     private int threadNo;     </span><br><span class="line">     public ThreadTest(int threadNo) &#123;     </span><br><span class="line">         this.threadNo = threadNo;     </span><br><span class="line">     &#125;     </span><br><span class="line">     public static void main(String[] args) throws Exception &#123;     </span><br><span class="line">         for (int i = 1; i &lt; 10; i++) &#123;     </span><br><span class="line">            new ThreadTest(i).start();     </span><br><span class="line">             Thread.sleep(1);     </span><br><span class="line">         &#125;     </span><br><span class="line">      &#125;     </span><br><span class="line">       </span><br><span class="line">     @Override    </span><br><span class="line">     public synchronized void run() &#123;     </span><br><span class="line">         for (int i = 1; i &lt; 10000; i++) &#123;     </span><br><span class="line">             System.out.println(&quot;No.&quot; + threadNo + &quot;:&quot; + i);     </span><br><span class="line">         &#125;     </span><br><span class="line">     &#125;     </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个程序其实就是让10个线程在控制台上数数，从1数到9999。理想情况下，我们希望看到一个线程数完，然后才是另一个线程开始数数。但是这个程序的执行过程告诉我们，这些线程还是乱糟糟的在那里抢着报数，丝毫没有任何规矩可言。run方法加了一个synchronized关键字的，按道理说，这些线程应该可以一个接一个的执行这个run方法才对阿。可是，这里一共十个线程，每个线程持有自己 线程对象的那个对象锁。这必然不能产生同步的效果。换句话说，<strong>如果要对这些线程进行同步，那么这些线程所持有的对象锁应当是共享且唯一的！</strong> </p>
+<p>我们来看下面的例程： </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">public class ThreadTest2 extends Thread &#123;     </span><br><span class="line">	private int threadNo; </span><br><span class="line">	private String lock;     </span><br><span class="line">	public ThreadTest2(int threadNo, String lock) &#123;     </span><br><span class="line">		this.threadNo = threadNo;     </span><br><span class="line">   	this.lock = lock;   </span><br><span class="line">   &#125;     </span><br><span class="line">	public static void main(String[] args) throws Exception &#123;     </span><br><span class="line">   	String lock = new String(&quot;lock&quot;);     </span><br><span class="line">     	for (int i = 1; i &lt; 10; i++) &#123;       </span><br><span class="line">  		new ThreadTest2(i, lock).start();     </span><br><span class="line">     	Thread.sleep(1);     </span><br><span class="line">   	&#125;     </span><br><span class="line">	&#125;       </span><br><span class="line">public void run() &#123;       </span><br><span class="line">		synchronized (lock) &#123;     </span><br><span class="line">     		for (int i = 1; i &lt; 10000; i++) &#123;     </span><br><span class="line">      			System.out.println(&quot;No.&quot; + threadNo + &quot;:&quot; + i);     </span><br><span class="line">  			&#125;        </span><br><span class="line">		&#125;       </span><br><span class="line">	&#125;     </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该程序通过在main方法启动10个线程之前，创建了一个String类型的对象。并通过ThreadTest2的构造函数，将这个对象赋值 给每一个ThreadTest2线程对象中的私有变量lock。根据Java方法的传值特点，我们知道，这些线程的lock变量实际上指向的是堆内存中的 同一个区域，即存放main函数中的lock变量的区域。程序将原来run方法前的synchronized关键字去掉，换用了run方法中的一个synchronized块来实现。这个同步块的对象锁，就是 main方法中创建的那个String对象。换句话说，他们指向的是同一个String类型的对象，对象锁是共享且唯一的！  于是，我们看到了预期的效果：10个线程不再是争先恐后的报数了，而是一个接一个的报数。  再来看下面的例程： </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadTest3</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;     </span><br><span class="line">     </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> threadNo;     </span><br><span class="line">    <span class="keyword">private</span> String lock;     </span><br><span class="line">     </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ThreadTest3</span><span class="params">(<span class="keyword">int</span> threadNo)</span> </span>&#123;     </span><br><span class="line">        <span class="keyword">this</span>.threadNo = threadNo;     </span><br><span class="line">    &#125;     </span><br><span class="line">     </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;     </span><br><span class="line">         </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; <span class="number">20</span>; i++) &#123;     </span><br><span class="line">            <span class="keyword">new</span> ThreadTest3(i).start();     </span><br><span class="line">            Thread.sleep(<span class="number">1</span>);     </span><br><span class="line">        &#125;     </span><br><span class="line">    &#125;     </span><br><span class="line">     </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">abc</span><span class="params">(<span class="keyword">int</span> threadNo)</span> </span>&#123;     </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; <span class="number">10000</span>; i++) &#123;     </span><br><span class="line">                </span><br><span class="line">                System.out.println(<span class="string">"No."</span> + threadNo + <span class="string">":"</span> + i);             </span><br><span class="line">        &#125;     </span><br><span class="line">    &#125;     </span><br><span class="line">     </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;     </span><br><span class="line">        abc(threadNo);     </span><br><span class="line">    &#125;     </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这段代码没有使用main方法中创建的String对象作为这10个线程的线程锁。而是通过在run方法中调用本线 程中一个静态的同步 方法abc而实现了线程的同步。我想看到这里，应该很困惑：这里synchronized静态方法是用什么来做对象锁的呢？    </p>
+<p>我们知道，对于同步静态方法，对象锁就是该静态放发所在的类的Class实例，由于在JVM中，所有被加载的类都有唯一的类对象，具体到本例，就是唯一的 ThreadTest3.class对象。不管我们创建了该类的多少实例，但是它的类实例仍然是一个！    </p>
+<p>这样我们就知道了： </p>
+<ol>
+<li>对于同步的方法或者代码块来说，必须获得对象锁才能够进入同步方法或者代码块进行操作；   </li>
+<li>如果采用method级别的同步，则对象锁即为method所在的对象，如果是静态方法，对象锁即指method所在的 Class对象(唯一)；   </li>
+<li>对于代码块，对象锁即指synchronized(abc)中的abc；   </li>
+<li>因为第一种情况，对象锁即为每一个线程对象，因此有多个，所以同步失效，第二种共用同一个对象锁lock，因此同步生效，第三个因为是 static因此对象锁为ThreadTest3的class 对象，因此同步生效。  </li>
+</ol>
+<p>如果是同步代码块，则对象锁需要编程人员自己指定，一般有些代码为synchronized(this)只有在单态模式才生效； （本类的实例有且只有一个）  如果是同步方法，<strong>则分静态和非静态两种</strong> 。  </p>
+<p>静态方法则一定会同步，非静态方法需在单例模式才生效，推荐用静态方法(不用担心是否单例)。 </p>
+<p>所以说，在Java多线程编程中，最常见的synchronized关键字实际上是依靠对象锁的机制来实现线程同步的。 </p>
 
         
     
@@ -533,19 +548,19 @@
             <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
     <!-- Prev Nav -->
     
-        <a href="/2018/07/22/Java多线程的同步机制/" id="post_nav-newer" class="prev-content">
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
-                <i class="material-icons">arrow_back</i>
-            </button>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            新篇
-        </a>
-    
 
     <!-- Section Spacer -->
     <div class="section-spacer"></div>
 
     <!-- Next Nav -->
+    
+        <a href="/2018/07/12/AsyncTask源码解析/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
     
 </nav>
 
